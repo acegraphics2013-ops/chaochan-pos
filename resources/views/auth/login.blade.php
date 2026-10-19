@@ -24,10 +24,31 @@
    </form>
    <div class="login-credit">
     <p>© {{ date('Y') }} ChaoChan Fried Rice. All rights reserved.</p>
-    <p>Developed &amp; maintained by <a href="https://acecreatives.vercel.app" target="_blank" rel="noopener noreferrer">Ace Creatives</a></p>
+    <p>Developed &amp; maintained by <a href="https://acecreatives.vercel.app" target="_blank" rel="noopener noreferrer" id="ace-link">Ace Creatives</a></p>
    </div>
   </div>
  </section>
 </div>
+<div id="ace-confirm" class="modal-screen hidden" role="dialog" aria-modal="true" aria-labelledby="ace-confirm-title">
+ <div class="modal-card">
+  <h2 id="ace-confirm-title">Leave ChaoChan POS?</h2>
+  <p class="muted">You are about to open the <strong>Ace Creatives</strong> website in a new tab.</p>
+  <div class="row-actions">
+   <button type="button" class="btn btn-primary" id="ace-yes">Yes, open link</button>
+   <button type="button" class="btn btn-soft" id="ace-no">No, stay here</button>
+  </div>
+ </div>
+</div>
+<script>
+ (function(){
+  var link=document.getElementById('ace-link'),modal=document.getElementById('ace-confirm');
+  if(!link||!modal)return;
+  var url=link.getAttribute('href');
+  link.addEventListener('click',function(e){e.preventDefault();modal.classList.remove('hidden');});
+  document.getElementById('ace-no').addEventListener('click',function(){modal.classList.add('hidden');});
+  document.getElementById('ace-yes').addEventListener('click',function(){modal.classList.add('hidden');window.open(url,'_blank','noopener,noreferrer');});
+  modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.add('hidden');});
+ })();
+</script>
 </body>
 </html>
