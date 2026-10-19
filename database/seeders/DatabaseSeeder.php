@@ -10,7 +10,8 @@ class DatabaseSeeder extends Seeder {
    'Paldo Combo'=>[['H2','Hungarian Sausage + Sisig w/ Fried Rice & Egg',189],['H3','Hungarian Sausage + Beef Tapa w/ Fried Rice & Egg',189],['H4','Hungarian Sausage + Kawali w/ Fried Rice & Egg',189],['H5','Hungarian Sausage + Fried Pork Chop w/ Fried Rice & Egg',189],['B2','Beef Tapa + Kawali w/ Fried Rice & Egg',199]],
    'Canned Goods & Silog'=>[['CB','Corned Beef w/ Fried Rice & Egg',85],['LM','Luncheon Meat w/ Fried Rice & Egg',89],['ML','Meatloaf w/ Fried Rice & Egg',85],['HD','Hotsilog w/ Fried Rice & Egg',75],['TOC','Tocino w/ Fried Rice & Egg',89],['SP','Spam w/ Fried Rice & Egg',109],['SEO','Special Egg Omelette w/ Fried Rice',65]],
    'Canton & Noodles'=>[['CS','Canton Solo',29],['CE','Canton w/ Egg',39],['CFR','Canton w/ Fried Rice & Egg',59],['N','Noodles',20],['NE','Noodles w/ Egg',30]],
-   'Add-ons & Drinks'=>[['ADD-EGG','Extra Egg',15],['ADD-RICE','Extra Fried Rice',25],['DRK-SWAKTO','Coke Swakto',18],['DRK-MISMO','Coke Mismo',25]]
+   'Add-ons & Drinks'=>[['ADD-EGG','Extra Egg',15],['ADD-RICE','Extra Fried Rice',25],['DRK-SWAKTO','Coke Swakto',18],['DRK-MISMO','Coke Mismo',25]],
+   'Example Menu'=>[['EX1','Example Fried Rice Bowl',99]]
   ];
   foreach($menu as $cat=>$items){
     $categoryId=DB::table('categories')->updateOrInsert(['name'=>$cat],['sort_order'=>array_search($cat,array_keys($menu))+1,'updated_at'=>now()]);

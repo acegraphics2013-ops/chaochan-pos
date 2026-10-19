@@ -144,3 +144,4 @@ tr[hidden]{display:none}
 .qr-track-fab[hidden]{display:none}
 .qr-track-fab .pill{background:#fff;color:var(--deep);padding:1px 8px}
 .qr-track-fab:hover{background:#5c0000}
+.cart-panel .cart-items{max-height:none;overflow:visible}
