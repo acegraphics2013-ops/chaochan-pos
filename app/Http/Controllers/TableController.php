@@ -37,17 +37,34 @@ class TableController {
   return ':'.$port;
  }
  private function lanIp():?string{
+  $outbound=$this->outboundIp();
+  if($outbound)return $outbound;
   $candidates=[];
   $server=(string)($_SERVER['SERVER_ADDR']??'');
   if($server!=='')$candidates[]=$server;
   $name=gethostname();
   if($name){$resolved=@gethostbynamel($name);if(is_array($resolved))$candidates=array_merge($candidates,$resolved);}
+  $fallback=null;
   foreach($candidates as $ip){
-   if(filter_var($ip,FILTER_VALIDATE_IP)===false)continue;
-   if(in_array($ip,['127.0.0.1','::1'],true))continue;
-   if(filter_var($ip,FILTER_VALIDATE_IP,FILTER_FLAG_NO_PRIV_RANGE|FILTER_FLAG_NO_RES_RANGE)===false)return $ip;
+   if(!$this->isUsableLanIp($ip))continue;
+   if(str_starts_with($ip,'192.168.'))return $ip;
+   if($fallback===null)$fallback=$ip;
   }
-  return null;
+  return $fallback;
+ }
+ private function outboundIp():?string{
+  $sock=@stream_socket_client('udp://8.8.8.8:53',$errno,$errstr,1);
+  if(!$sock)return null;
+  $name=@stream_socket_get_name($sock,false);
+  fclose($sock);
+  if(!is_string($name)||!str_contains($name,':'))return null;
+  $ip=strstr($name,':',true);
+  return $this->isUsableLanIp($ip)?$ip:null;
+ }
+ private function isUsableLanIp(string $ip):bool{
+  if(filter_var($ip,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)===false)return false;
+  if(in_array($ip,['127.0.0.1','0.0.0.0'],true))return false;
+  return filter_var($ip,FILTER_VALIDATE_IP,FILTER_FLAG_NO_PRIV_RANGE|FILTER_FLAG_NO_RES_RANGE)===false;
  }
  public function store(Request $request){
   $data=$request->validate(['number'=>'required|string|max:20|unique:restaurant_tables,number','capacity'=>'required|integer|min:1|max:50']);
